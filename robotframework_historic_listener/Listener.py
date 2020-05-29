@@ -109,8 +109,8 @@ def connect_to_mysql_db(host, user, pwd, db):
             database=db
         )
         return mydb
-    except Exception:
-        print(Exception)
+    except Exception as e:
+        print(e)
 
 def insert_into_execution_table(con, ocon, name, total, passed, failed, ctime, stotal, spass, sfail, projectname):
     cursorObj = con.cursor()
@@ -121,8 +121,8 @@ def insert_into_execution_table(con, ocon, name, total, passed, failed, ctime, s
     con.commit()
     cursorObj.execute("SELECT Execution_Id, Execution_Pass, Execution_Total FROM TB_EXECUTION ORDER BY Execution_Id DESC LIMIT 1;")
     rows = cursorObj.fetchone()
-    # update robothistoric.tb_project table
-    # rootCursorObj.execute("UPDATE tb_project SET Last_Updated = now(), Total_Executions = %s, Recent_Pass_Perc =%s WHERE Project_Name='%s';" % (rows[0], float("{0:.2f}".format((rows[1]/rows[2]*100))), projectname))
+    # update robothistoric.TB_PROJECT table
+    # rootCursorObj.execute("UPDATE TB_PROJECT SET Last_Updated = now(), Total_Executions = %s, Recent_Pass_Perc =%s WHERE Project_Name='%s';" % (rows[0], float("{0:.2f}".format((rows[1]/rows[2]*100))), projectname))
     # ocon.commit()
     return str(rows[0])
 
@@ -136,8 +136,8 @@ def update_execution_table(con, ocon, eid, total, passed, failed, duration, stot
     rows = cursorObj.fetchone()
     cursorObj.execute("SELECT COUNT(*) FROM TB_EXECUTION;")
     execution_rows = cursorObj.fetchone()
-    # update robothistoric.tb_project table
-    rootCursorObj.execute("UPDATE tb_project SET Last_Updated = now(), Total_Executions = %s, Recent_Pass_Perc =%s WHERE Project_Name='%s';" % (execution_rows[0], float("{0:.2f}".format((rows[0]/rows[1]*100))), projectname))
+    # update robothistoric.TB_PROJECT table
+    rootCursorObj.execute("UPDATE TB_PROJECT SET Last_Updated = now(), Total_Executions = %s, Recent_Pass_Perc =%s WHERE Project_Name='%s';" % (execution_rows[0], float("{0:.2f}".format((rows[0]/rows[1]*100))), projectname))
     ocon.commit()
 
 def insert_into_suite_table(con, eid, name, status, total, passed, failed, duration):
